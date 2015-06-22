@@ -22,6 +22,9 @@
 		//additional rr count
 		private ushort additionalCount;
 
-
+		public Header(Reader reader)
+		{
+			
+		}
 	}
 }
