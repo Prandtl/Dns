@@ -1,41 +1,57 @@
-﻿namespace DinosaursNotSausages.Dns
+﻿using System.Text;
+
+namespace DinosaursNotSausages.Dns
 {
 	class Header
 	{
 		//transaction id
-		private ushort transactionId;
-
+		public ushort TransactionId { get; private set; }
 		//flags
-		private bool request;
-		private byte opCode;
-		private bool authority;
-		private bool truncation;
-		private bool recursionDesired;
-		private bool recursionAvaliable;
-		private byte result;
-
+		public bool Request { get; private set; }
+		public byte OpCode { get; private set; }
+		public bool Authority { get; private set; }
+		public bool Truncation { get; private set; }
+		public bool RecursionDesired { get; private set; }
+		public bool RecursionAvaliable { get; private set; }
+		public byte Result { get; private set; }
 		//question rr count
-		private ushort questionCount;
+		public ushort QuestionCount { get; private set; }
 		//answer rr count
-		private ushort answerCount;
+		public ushort AnswerCount { get; private set; }
 		//authority rr count
-		private ushort authorityCount;
+		public ushort AuthorityCount { get; private set; }
 		//additional rr count
-		private ushort additionalCount;
-
+		public ushort AdditionalCount { get; private set; }
 
 		private Reader reader;
 
 		public Header(Reader reader)
 		{
 			this.reader = reader;
-			transactionId = reader.ReadUshort();
+			TransactionId = reader.ReadUshort();
 			ReadFlags();
-			questionCount = reader.ReadUshort();
-			answerCount = reader.ReadUshort();
-			authorityCount = reader.ReadUshort();
-			additionalCount = reader.ReadUshort();
+			QuestionCount = reader.ReadUshort();
+			AnswerCount = reader.ReadUshort();
+			AuthorityCount = reader.ReadUshort();
+			AdditionalCount = reader.ReadUshort();
+		}
 
+		public string GetHumanReadableForm()
+		{
+			var sb = new StringBuilder();
+			sb.AppendLine("transaction id: " + TransactionId);
+			sb.AppendLine(Request?"request":"answer");
+			sb.AppendLine("operation code: " + OpCode);
+			sb.AppendLine("authority: " + Authority);
+			sb.AppendLine("truncation: " + Truncation);
+			sb.AppendLine("recursion desired: " + RecursionDesired);
+			sb.AppendLine("recursion avaliable: " + RecursionAvaliable);
+			sb.AppendLine("result code: " + Result);
+			sb.AppendLine("question count: " + QuestionCount);
+			sb.AppendLine("answer count: " + AnswerCount);
+			sb.AppendLine("authority count: " + AuthorityCount);
+			sb.AppendLine("additional count: " + AdditionalCount);
+			return sb.ToString();
 		}
 
 		private void ReadFlags()
@@ -43,16 +59,16 @@
 			var firstFlags = reader.ReadByte();
 			var secondFlags = reader.ReadByte();
 
-			request = Reader.GetBit(firstFlags, 1);
-			authority = Reader.GetBit(firstFlags, 6);
-			truncation = Reader.GetBit(firstFlags, 7);
+			Request = Reader.GetBit(firstFlags, 1);
 
-			opCode = ReadOpcode(firstFlags);
+			OpCode = ReadOpcode(firstFlags);
 
-			recursionDesired = Reader.GetBit(firstFlags, 8);
-			recursionAvaliable = Reader.GetBit(secondFlags, 1);
+			Authority = Reader.GetBit(firstFlags, 6);
+			Truncation = Reader.GetBit(firstFlags, 7);
+			RecursionDesired = Reader.GetBit(firstFlags, 8);
+			RecursionAvaliable = Reader.GetBit(secondFlags, 1);
 
-			result = ReadResult(secondFlags);
+			Result = ReadResult(secondFlags);
 
 		}
 
@@ -65,6 +81,5 @@
 		{
 			return Reader.ReadNumberInByte(flagsTwo, 5, 8);
 		}
-
 	}
 }
