@@ -2,7 +2,7 @@
 
 namespace DinosaursNotSausages.Dns.Records
 {
-	class AData:Record
+	class AData:IRecord
 	{
 		public IPAddress Address { get; private set; }
 

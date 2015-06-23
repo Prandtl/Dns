@@ -70,13 +70,10 @@ namespace DinosaursNotSausages.Dns
 			// sanity check
 			if (length <= 0 || position >= 16)
 				return oldValue;
-
 			// get some mask to put on
 			int mask = (2 << (length - 1)) - 1;
-
 			// clear out value
 			oldValue &= (ushort)~(mask << position);
-
 			// set new value
 			oldValue |= (ushort)((newValue & mask) << position);
 			return oldValue;
@@ -92,10 +89,8 @@ namespace DinosaursNotSausages.Dns
 			// sanity check
 			if (length <= 0 || position >= 16)
 				return 0;
-
 			// get some mask to put on
 			int mask = (2 << (length - 1)) - 1;
-
 			// shift down to get some value and mask it
 			return (ushort)((oldValue >> position) & mask);
 		}
@@ -138,7 +133,6 @@ namespace DinosaursNotSausages.Dns
 		{
 			StringBuilder domain = new StringBuilder();
 			int length = 0;
-
 			// get  the length of the first label
 			while ((length = ReadByte()) != 0)
 			{
@@ -147,33 +141,36 @@ namespace DinosaursNotSausages.Dns
 				{
 					// work out the existing domain name, copy this pointer
 					Reader newReader = Copy();
-
 					// and move it to where specified here
 					newReader.SetPosition((length & 0x3f) << 8 | ReadByte());
-
 					// repeat call recursively
 					domain.Append(newReader.ReadDomain());
 					return domain.ToString();
 				}
-
 				// if not using compression, copy a char at a time to the domain name
 				while (length > 0)
 				{
 					domain.Append(ReadChar());
 					length--;
 				}
-
 				// if size of next label isn't null (end of domain name) add a period ready for next label
 				if (Peek() != 0) domain.Append('.');
 			}
-
 			// and return
 			return domain.ToString();
 		}
 
-		public Record ReadRecord(Type dataType, ushort dataLength)
+		public IRecord ReadRecord(Type dataType, ushort dataLength)
 		{
-			return new Record();
+			switch (dataType)
+			{
+				case Type.A:
+					return new AData(this);
+				case Type.NS:
+					return new NSData(this);
+				default:
+					return null;
+			}
 		}
 	}
 }

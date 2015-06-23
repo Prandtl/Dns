@@ -1,6 +1,6 @@
 ﻿namespace DinosaursNotSausages.Dns.Records
 {
-	class NSData:Record
+	class NSData:IRecord
 	{
 		public string nsName { get; private set; }
 		

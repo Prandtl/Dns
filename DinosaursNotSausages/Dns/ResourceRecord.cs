@@ -15,16 +15,16 @@ namespace DinosaursNotSausages.Dns
 		public uint TTL { get; private set; }
 		public DateTime ArrivalTime { get; private set; }
 
-		public Record Record { get; private set; }
+		public IRecord Record { get; private set; }
 
 		public ResourceRecord(Reader reader)
 		{
 			Name = reader.ReadDomain();
-			RrType = (Type) reader.ReadUshort();
-			RrClass = (Class) reader.ReadUshort();
+			RrType = (Type)reader.ReadUshort();
+			RrClass = (Class)reader.ReadUshort();
 			TTL = reader.ReadUInt();
 			var dataLength = reader.ReadUshort();
-			Record = reader.ReadRecord(RrType,dataLength);
+			Record = reader.ReadRecord(RrType, dataLength);
 
 		}
 	}
