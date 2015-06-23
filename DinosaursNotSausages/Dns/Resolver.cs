@@ -1,32 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DinosaursNotSausages.Dns
 {
 	class Resolver
 	{
-		private bool udpConnection = true;
-		private int timeOut = 1;
+		private TransportType connection = TransportType.Udp;
 		private int port = 53;
 
 		public void Listen()
 		{
-			if (udpConnection)
+			if (connection==TransportType.Udp)
 			{
 				UdpListen();
 			}
 			//todo:tcpListen
 		}
 
-		public void SetTimeOut(int seconds)
-		{
-			timeOut = seconds;
-		}
 
 		private void UdpListen()
 		{

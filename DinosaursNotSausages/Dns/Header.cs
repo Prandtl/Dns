@@ -7,13 +7,97 @@ namespace DinosaursNotSausages.Dns
 		//transaction id
 		public ushort TransactionId { get; private set; }
 		//flags
-		public bool Request { get; private set; }
-		public byte OpCode { get; private set; }
-		public bool Authority { get; private set; }
-		public bool Truncation { get; private set; }
-		public bool RecursionDesired { get; private set; }
-		public bool RecursionAvaliable { get; private set; }
-		public byte Result { get; private set; }
+		public ushort Flags { get; private set; }
+		#region flags
+		public bool QR
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 15, 1) == 1;
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 15, 1, value);
+			}
+		}
+		public OPCode OpCode
+		{
+			get
+			{
+				return (OPCode)Reader.GetBits(Flags, 11, 4);
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 11, 4, (ushort)value);
+			}
+		}
+		public bool Authority
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 10, 1) == 1;
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 10, 1, value);
+			}
+		}
+		public bool Truncation
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 9, 1) == 1;
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 9, 1, value);
+			}
+		}
+		public bool RecursionDesired
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 8, 1) == 1;
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 8, 1, value);
+			}
+		}
+		public bool RecursionAvaliable
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 7, 1) == 1;
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 7, 1, value);
+			}
+		}
+		public ushort Z
+		{
+			get
+			{
+				return Reader.GetBits(Flags, 4, 3);
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 4, 3, value);
+			}
+		}
+		public RCode Result
+		{
+			get
+			{
+				return (RCode)Reader.GetBits(Flags, 0, 4);
+			}
+			set
+			{
+				Flags = Reader.SetBits(Flags, 0, 4, (ushort)value);
+			}
+		}
+		#endregion
 		//question rr count
 		public ushort QuestionCount { get; private set; }
 		//answer rr count
@@ -40,7 +124,7 @@ namespace DinosaursNotSausages.Dns
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine("transaction id: " + TransactionId);
-			sb.AppendLine(Request ? "response" : "query");
+			sb.AppendLine(QR ? "response" : "query");
 			sb.AppendLine("operation code: " + OpCode);
 			sb.AppendLine("authority: " + Authority);
 			sb.AppendLine("truncation: " + Truncation);
@@ -56,30 +140,7 @@ namespace DinosaursNotSausages.Dns
 
 		private void ReadFlags()
 		{
-			var firstFlags = reader.ReadByte();
-			var secondFlags = reader.ReadByte();
-
-			Request = Reader.GetBit(firstFlags, 1);
-
-			OpCode = ReadOpcode(firstFlags);
-
-			Authority = Reader.GetBit(firstFlags, 6);
-			Truncation = Reader.GetBit(firstFlags, 7);
-			RecursionDesired = Reader.GetBit(firstFlags, 8);
-			RecursionAvaliable = Reader.GetBit(secondFlags, 1);
-
-			Result = ReadResult(secondFlags);
-
-		}
-
-		private byte ReadOpcode(byte flagsOne)
-		{
-			return Reader.ReadNumberInByte(flagsOne, 2, 5);
-		}
-
-		private byte ReadResult(byte flagsTwo)
-		{
-			return Reader.ReadNumberInByte(flagsTwo, 5, 8);
+			Flags = reader.ReadUshort();
 		}
 	}
 }
