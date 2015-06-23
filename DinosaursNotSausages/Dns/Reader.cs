@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using DinosaursNotSausages.Dns.Records;
 
 namespace DinosaursNotSausages.Dns
 {
@@ -27,6 +28,7 @@ namespace DinosaursNotSausages.Dns
 			return new Reader(data, pointer);
 		}
 
+		#region reading numbers
 		public byte ReadByte()
 		{
 			var result = pointer <= data.Length ?
@@ -35,12 +37,17 @@ namespace DinosaursNotSausages.Dns
 			pointer++;
 			return result;
 		}
-
 		public ushort ReadUshort()
 		{
 			return (ushort)(ReadByte() << 8 | ReadByte());
 		}
+		public uint ReadUInt()
+		{
+			return (uint)(ReadUshort() << 16 | ReadUshort());
+		}
+		#endregion
 
+		#region bit magic
 		public static bool GetBit(byte inputByte, int numberOfBit)
 		{
 			ushort firstOne = 128;
@@ -100,6 +107,7 @@ namespace DinosaursNotSausages.Dns
 			}
 			return (byte)res;
 		}
+		#endregion
 
 		public char ReadChar()
 		{
@@ -151,6 +159,11 @@ namespace DinosaursNotSausages.Dns
 
 			// and return
 			return domain.ToString();
+		}
+
+		public Record ReadRecord(Type dataType, ushort dataLength)
+		{
+			return new Record();
 		}
 	}
 }
