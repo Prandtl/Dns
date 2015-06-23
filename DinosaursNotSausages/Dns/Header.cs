@@ -107,7 +107,9 @@ namespace DinosaursNotSausages.Dns
 		//additional rr count
 		public ushort AdditionalCount { get; private set; }
 
+
 		private Reader reader;
+
 
 		public Header(Reader reader)
 		{

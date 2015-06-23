@@ -29,42 +29,36 @@ namespace DinosaursNotSausages.Dns
 							while (true)
 							{
 								var receivedResults = await udpClient.ReceiveAsync();
-								Callback(receivedResults.Buffer);
+								var data = receivedResults.Buffer;
+								var reader = new Reader(data);
+								var header = new Header(reader);
+								var questions = new List<Question>();
+								for (int i = 0; i < header.QuestionCount; i++)
+								{
+									questions.Add(new Question(reader));
+								}
+								for (int i = 0; i < header.AnswerCount; i++)
+								{
+
+								}
+								for (int i = 0; i < header.AuthorityCount; i++)
+								{
+
+								}
+								for (int i = 0; i < header.AdditionalCount; i++)
+								{
+
+								}
+								Console.WriteLine(header.GetHumanReadableForm());
+								foreach (var question in questions)
+								{
+									Console.WriteLine(question.ToString());
+								}
+								Console.WriteLine("----------------------------------------");
 							}
 						}
 					});
 
 		}
-
-		private void Callback(byte[] data)
-		{
-			var reader = new Reader(data);
-			var header = new Header(reader);
-			var questions = new List<Question>();
-			for (int i = 0; i < header.QuestionCount; i++)
-			{
-				questions.Add(new Question(reader));
-			}
-			for (int i = 0; i < header.AnswerCount; i++)
-			{
-
-			}
-			for (int i = 0; i < header.AuthorityCount; i++)
-			{
-
-			}
-			for (int i = 0; i < header.AdditionalCount; i++)
-			{
-
-			}
-			Console.WriteLine(header.GetHumanReadableForm());
-			foreach (var question in questions)
-			{
-				Console.WriteLine(question.ToString());
-			}
-			Console.WriteLine("----------------------------------------");
-		}
-
-
 	}
 }

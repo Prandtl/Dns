@@ -4,7 +4,7 @@ namespace DinosaursNotSausages
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			var resolver = new Resolver();
 			resolver.Listen();
