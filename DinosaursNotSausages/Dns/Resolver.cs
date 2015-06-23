@@ -36,12 +36,19 @@ namespace DinosaursNotSausages.Dns
 							while (true)
 							{
 								var receivedResults = await udpClient.ReceiveAsync();
-
-								
+								Callback(receivedResults.Buffer);
 							}
 						}
 					});
 
+		}
+
+		private void Callback(byte[] data)
+		{
+			var reader = new Reader(data);
+			var header = new Header(reader);
+			Console.WriteLine(header.GetHumanReadableForm());
+			Console.WriteLine("----------------------------------------");
 		}
 
 

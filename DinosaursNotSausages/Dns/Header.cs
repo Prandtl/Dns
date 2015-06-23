@@ -40,7 +40,7 @@ namespace DinosaursNotSausages.Dns
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine("transaction id: " + TransactionId);
-			sb.AppendLine(Request?"request":"answer");
+			sb.AppendLine(Request ? "response" : "query");
 			sb.AppendLine("operation code: " + OpCode);
 			sb.AppendLine("authority: " + Authority);
 			sb.AppendLine("truncation: " + Truncation);
