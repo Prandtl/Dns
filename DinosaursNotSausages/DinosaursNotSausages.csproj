@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dns\Enums.cs" />
     <Compile Include="Dns\Header.cs" />
+    <Compile Include="Dns\Question.cs" />
     <Compile Include="Dns\Reader.cs" />
     <Compile Include="Dns\Resolver.cs" />
     <Compile Include="Program.cs" />

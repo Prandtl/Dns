@@ -1,5 +1,4 @@
-﻿using System;
-using DinosaursNotSausages.Dns;
+﻿using DinosaursNotSausages.Dns;
 
 namespace DinosaursNotSausages
 {

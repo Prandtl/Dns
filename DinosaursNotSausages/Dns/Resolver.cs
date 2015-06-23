@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -47,7 +48,28 @@ namespace DinosaursNotSausages.Dns
 		{
 			var reader = new Reader(data);
 			var header = new Header(reader);
+			var questions = new List<Question>();
+			for (int i = 0; i < header.QuestionCount; i++)
+			{
+				questions.Add(new Question(reader));
+			}
+			for (int i = 0; i < header.AnswerCount; i++)
+			{
+
+			}
+			for (int i = 0; i < header.AuthorityCount; i++)
+			{
+
+			}
+			for (int i = 0; i < header.AdditionalCount; i++)
+			{
+
+			}
 			Console.WriteLine(header.GetHumanReadableForm());
+			foreach (var question in questions)
+			{
+				Console.WriteLine(question.ToString());
+			}
 			Console.WriteLine("----------------------------------------");
 		}
 
