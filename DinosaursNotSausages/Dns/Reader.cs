@@ -47,6 +47,16 @@ namespace DinosaursNotSausages.Dns
 		}
 		#endregion
 
+		public byte[] ReadBytes(int amount)
+		{
+			var bytes = new byte[amount];
+			for (int i = 0; i < amount; i++)
+			{
+				bytes[i] = ReadByte();
+			}
+			return bytes;
+		}
+
 		#region bit magic
 		public static bool GetBit(byte inputByte, int numberOfBit)
 		{
