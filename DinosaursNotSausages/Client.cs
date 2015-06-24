@@ -18,6 +18,8 @@ namespace DinosaursNotSausages
 		public void Resolve(string address)
 		{
 			var header = new Header(false);
+			var packet = new Packet(header);
+			packet.AddQuestion(new Question(address, QType.A, QClass.ANY));
 
 		}
 

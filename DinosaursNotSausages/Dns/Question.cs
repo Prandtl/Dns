@@ -15,6 +15,13 @@ namespace DinosaursNotSausages.Dns
 			Class = (QClass) reader.ReadUshort();
 		}
 
+		public Question(string name,QType type, QClass qClass)
+		{
+			Name = name;
+			Type = type;
+			Class = qClass;
+		}
+
 		public byte[] Data
 		{
 			get
