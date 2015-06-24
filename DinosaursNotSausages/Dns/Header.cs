@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace DinosaursNotSausages.Dns
@@ -6,9 +7,9 @@ namespace DinosaursNotSausages.Dns
 	class Header
 	{
 		//transaction id
-		public ushort TransactionId { get; private set; }
+		public ushort TransactionId { get; set; }
 		//flags
-		public ushort Flags { get; private set; }
+		public ushort Flags { get; set; }
 		#region flags
 		public bool QR
 		{
@@ -100,13 +101,13 @@ namespace DinosaursNotSausages.Dns
 		}
 		#endregion
 		//question rr count
-		public ushort QuestionCount { get; private set; }
+		public ushort QuestionCount { get; set; }
 		//answer rr count
-		public ushort AnswerCount { get; private set; }
+		public ushort AnswerCount { get; set; }
 		//authority rr count
-		public ushort AuthorityCount { get; private set; }
+		public ushort AuthorityCount { get; set; }
 		//additional rr count
-		public ushort AdditionalCount { get; private set; }
+		public ushort AdditionalCount { get; set; }
 
 
 		private Reader reader;
@@ -121,6 +122,18 @@ namespace DinosaursNotSausages.Dns
 			AnswerCount = reader.ReadUshort();
 			AuthorityCount = reader.ReadUshort();
 			AdditionalCount = reader.ReadUshort();
+		}
+
+		public Header(bool qr)
+		{
+			var r = new Random();
+			TransactionId = (ushort)r.Next(ushort.MaxValue);
+			QR = qr;
+			OpCode = 0;
+			Authority = false;
+			Truncation = false;
+			RecursionAvaliable = false;
+			RecursionDesired = true;
 		}
 
 		public string GetHumanReadableForm()

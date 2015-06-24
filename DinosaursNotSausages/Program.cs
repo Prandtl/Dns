@@ -6,12 +6,7 @@ namespace DinosaursNotSausages
 	{
 		static void Main()
 		{
-			var resolver = new Resolver();
-			resolver.Listen();
-			while (true)
-			{
 
-			}
 		}
 	}
 }
