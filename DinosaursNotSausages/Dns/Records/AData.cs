@@ -2,7 +2,7 @@
 
 namespace DinosaursNotSausages.Dns.Records
 {
-	class AData:IRecord
+	class AData : IRecord
 	{
 		public IPAddress Address { get; private set; }
 
@@ -14,6 +14,11 @@ namespace DinosaursNotSausages.Dns.Records
 		public override string ToString()
 		{
 			return Address.ToString();
+		}
+
+		public byte[] GetData()
+		{
+			return Address.GetAddressBytes();
 		}
 	}
 }

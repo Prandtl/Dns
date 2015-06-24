@@ -2,16 +2,21 @@
 {
 	class NSData:IRecord
 	{
-		public string nsName { get; private set; }
+		public string NsName { get; private set; }
 		
 		public NSData(Reader reader)
 		{
-			reader.ReadDomain();
+			NsName = reader.ReadDomain();
 		}
 
 		public override string ToString()
 		{
-			return nsName;
+			return NsName;
+		}
+
+		public byte[] GetData()
+		{
+			return Writer.WriteName(NsName);
 		}
 	}
 }

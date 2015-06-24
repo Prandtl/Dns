@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace DinosaursNotSausages.Dns
 {
@@ -138,6 +139,20 @@ namespace DinosaursNotSausages.Dns
 			sb.AppendLine("authority count: " + AuthorityCount);
 			sb.AppendLine("additional count: " + AdditionalCount);
 			return sb.ToString();
+		}
+		public byte[] Data
+		{
+			get
+			{
+				List<byte> data = new List<byte>();
+				data.AddRange(Writer.WriteShort(TransactionId));
+				data.AddRange(Writer.WriteShort(Flags));
+				data.AddRange(Writer.WriteShort(QuestionCount));
+				data.AddRange(Writer.WriteShort(AnswerCount));
+				data.AddRange(Writer.WriteShort(AuthorityCount));
+				data.AddRange(Writer.WriteShort(AdditionalCount));
+				return data.ToArray();
+			}
 		}
 
 		private void ReadFlags()
